@@ -1,0 +1,29 @@
+To,
+The Principal,
+SIES Graduate School of Technology
+Subject: Request for Attendance Permission – Industry Collaboration on 3D Printing Anomaly Detection
+Dear Madam,
+We are pleased to inform you that a team of final-year students from your esteemed institution, pursuing B.E. in Artificial Intelligence and Machine Learning, is actively engaged in an industry-oriented R&D initiative with Vektor3D Systems LLP. The project, titled “Automated Anomaly Detection in 3D Printing”, focuses on developing an AI-powered computer vision pipeline for real-time defect detection in additive manufacturing processes.
+The system leverages convolutional neural networks, transfer learning on pre-trained deep models, and real-time multi-frame image analytics to detect micro-level deviations during the printing process. The solution aims to address challenges such as print failure mitigation, predictive quality assurance, and adaptive feedback control in 3D printing workflows.
+As part of this collaboration, the students are providing consultancy services to our organization in building a production-ready deep learning framework, for which they will receive compensation (Amount: ₹) for their technical contributions.
+Given the hardware-intensive nature of this project, which involves multi-angle camera setups, GPU-accelerated model training, and extensive dataset curation, we request your kind approval to allow the following students to work at our office premises for three full working days a week (Monday, Wednesday, Thursday) from 24 July 2025 to 30th January 2026 (to be extended to further 6 months as per project requirement). Project Team Members:
+Archi Nikam – 122A9008
+Arnav Mangaonkar – 122A9009
+Rutuparna Kolte – 122A9042
+Shubham Kalekar – 122A9053
+During this period, they will be:
+•	Capturing large-scale multi-view datasets from industrial-grade 3D printers for supervised learning models.
+•	Performing real-time anomaly detection benchmarking using GPU-accelerated training clusters.
+We assure you that this collaboration is deeply aligned with academic objectives, providing the students with hands-on exposure to cutting-edge AI applications in Industry 4.0 domains.
+We kindly seek your approval for attendance concession on the specified days to facilitate the successful execution of this research-driven industry-academia engagement.
+Thank you for your kind support.
+Sincerely,
+Prahalad Solanki
+Founder and CEO
+Vektor3D Systems LLP
+prahalad@vektor3ds.com
++91-9768474090
+Gala no. 3 and 4, opp. Kamraj Hall,
+Shell Colony, Sai Baba Nagar,
+Chembur, Mumbai 400071
+
