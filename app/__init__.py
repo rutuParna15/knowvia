@@ -46,7 +46,9 @@ def create_app():
 
     # Register routes
     from app.routes.notebooks import notebook_bp
-
     app.register_blueprint(notebook_bp)
+    
+    from app.routes.pages import pages_bp
+    app.register_blueprint(pages_bp)
 
     return app

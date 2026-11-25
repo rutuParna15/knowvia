@@ -4,6 +4,14 @@ from app.services.prompt_service import build_qa_prompt
 from app.services.llm_service import generate_response
 
 
+def has_insufficient_context(answer: str) -> bool:
+    fallback = (
+        "The provided documents do not contain enough "
+        "information to answer this question."
+    )
+
+    return fallback.lower() in answer.lower()
+
 def answer_question(
     question: str,
     notebook_id: int,
@@ -35,16 +43,19 @@ def answer_question(
     # 3. Generate answer using local LLM
     answer = generate_response(prompt)
 
-    # 4. Prepare source references
-    sources = []
-
-    for chunk in retrieved_chunks:
-        sources.append({
-            "document_id": chunk.get("document_id"),
-            "chunk_id": chunk.get("chunk_id"),
-            "page_number": chunk.get("page_number"),
-            "content": chunk.get("content")
-        })
+    # 4. If context is insufficient, do not return sources
+    if has_insufficient_context(answer):
+        sources = []
+    else:
+        sources = [
+            {
+                "document_id": chunk.get("document_id"),
+                "chunk_id": chunk.get("chunk_id"),
+                "page_number": chunk.get("page_number"),
+                "content": chunk.get("content")
+            }
+            for chunk in retrieved_chunks
+        ]
 
     return {
         "question": question,

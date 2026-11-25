@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowvia</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+<body>
+
+<div class="app-container">
+
+    <!-- Left panel: Notebooks -->
+    <aside class="notebook-panel">
+
+        <div class="brand">
+            <div class="brand-logo">K</div>
+            <span>knowvia</span>
+        </div>
+
+        <div class="panel-heading">
+            <span>YOUR NOTEBOOKS</span>
+            <button class="icon-button" id="create-notebook-btn"
+                    title="Create notebook">+</button>
+        </div>
+
+        <div class="notebook-list" id="notebook-list">
+            <div class="empty-state">
+                No notebooks yet
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <span>Local workspace</span>
+            <span class="local-indicator"></span>
+        </div>
+
+    </aside>
+
+
+    <!-- Middle panel: Chat -->
+    <main class="chat-panel">
+
+        <header class="chat-header">
+            <div>
+                <h2 id="active-notebook-name">Select a notebook</h2>
+                <p id="chat-subtitle">Your personal study workspace</p>
+            </div>
+
+            <button class="icon-button" id="clear-chat-btn"
+                    title="Clear conversation">↺</button>
+        </header>
+
+        <section class="chat-content" id="chat-content">
+
+            <div class="welcome-screen" id="welcome-screen">
+                <div class="welcome-icon">K</div>
+                <h1>What would you like to learn?</h1>
+                <p>
+                    Select a notebook and ask questions about your documents.
+                </p>
+            </div>
+
+        </section>
+
+        <footer class="chat-input-area">
+            <form id="chat-form" class="chat-input-container">
+                <textarea
+                    id="question-input"
+                    placeholder="Ask a question about your sources..."
+                    rows="1"
+                    disabled
+                ></textarea>
+
+                <button type="submit" id="send-question-btn" disabled>
+                    Send
+                </button>
+            </form>
+
+            <p class="input-disclaimer">
+                Knowvia answers using the documents in your selected notebook.
+            </p>
+        </footer>
+
+    </main>
+
+
+    <!-- Right panel: Documents -->
+    <aside class="document-panel">
+
+        <div class="document-header">
+            <div>
+                <h3>Sources</h3>
+                <p id="document-count">0 documents</p>
+            </div>
+
+            <button id="add-document-btn" class="add-document-btn">
+                <span>+</span> Add document
+            </button>
+
+            <input
+                type="file"
+                id="document-file-input"
+                accept=".pdf,.docx,.txt,.md"
+                multiple
+                hidden
+            >
+        </div>
+
+        <div class="document-list" id="document-list">
+            <div class="empty-state">
+                Select a notebook to view its documents
+            </div>
+        </div>
+
+        <div class="document-footer">
+            <p>Supported formats</p>
+            <span>PDF · DOCX · TXT · MD</span>
+        </div>
+
+    </aside>
+
+</div>
+
+
+<!-- Create Notebook Modal -->
+<dialog id="create-notebook-modal" class="modal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <div>
+                <h2>Create a notebook</h2>
+                <p>Give your notebook a name and add your study materials.</p>
+            </div>
+
+            <button type="button" class="modal-close-btn"
+                    id="close-notebook-modal">×</button>
+        </div>
+
+        <form id="create-notebook-form">
+
+            <div class="modal-body">
+
+                <label for="notebook-name">Notebook name</label>
+
+                <input
+                    type="text"
+                    id="notebook-name"
+                    name="name"
+                    placeholder="e.g. Machine Learning"
+                    maxlength="150"
+                    required
+                >
+
+                <div class="modal-document-heading">
+                    <label>Documents</label>
+
+                    <button
+                        type="button"
+                        id="modal-add-documents-btn"
+                        class="modal-add-btn"
+                    >
+                        + Add documents
+                    </button>
+                </div>
+
+                <input
+                    type="file"
+                    id="modal-file-input"
+                    accept=".pdf,.docx,.txt,.md"
+                    multiple
+                    hidden
+                >
+
+                <div id="modal-document-list" class="modal-document-list">
+
+                    <div class="modal-empty-state">
+                        No documents added yet.
+                    </div>
+
+                </div>
+
+                <p class="modal-file-info">
+                    Supported formats: PDF, DOCX, TXT, MD
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    id="cancel-notebook-btn"
+                    class="modal-cancel-btn"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    id="submit-notebook-btn"
+                    class="modal-create-btn"
+                >
+                    Create notebook
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</dialog>
+
+<script src="{{ url_for('static', filename='vendor/marked.umd.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/purify.min.js') }}"></script>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>
