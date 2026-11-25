@@ -1,7 +1,8 @@
 
 from pathlib import Path
 
-import fitz  # PyMuPDF
+import pymupdf
+
 from docx import Document
 
 
@@ -17,7 +18,7 @@ def extract_pdf(file_path):
     pages = []
 
     try:
-        with fitz.open(file_path) as pdf:
+        with pymupdf.open(file_path) as pdf:
             for page_number, page in enumerate(pdf, start=1):
                 text = page.get_text("text")
 
