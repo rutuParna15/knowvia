@@ -53,7 +53,8 @@ class Document(db.Model):
     processing_status = db.Column(
         db.String(20),
         nullable=False,
-        default="pending"
+        default="pending",
+        server_default="pending"
     )
 
 

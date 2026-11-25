@@ -1,4 +1,3 @@
-
 import os
 import uuid
 
@@ -14,6 +13,7 @@ from flask import (
 from werkzeug.utils import secure_filename
 
 from app.extensions import db
+from app.services.qa_service import answer_question
 from app.models import Notebook, Document
 from app.services.ingestion_pipeline import ingest_document
 
@@ -313,24 +313,20 @@ def get_notebooks():
         ]
     }), 200
     
-@notebook_bp.route(
-    "/api/notebooks/<int:notebook_id>/documents",
-    methods=["GET"]
-)
+
+@notebook_bp.route("/api/notebooks/<int:notebook_id>/documents", methods=["GET"])
 def get_notebook_documents(notebook_id):
 
-    # Check whether notebook exists
     notebook = db.session.get(Notebook, notebook_id)
 
     if notebook is None:
         return jsonify({
-            "error": "Notebook not found."
+            "error": "Notebook not found"
         }), 404
 
-    # Fetch documents belonging to this notebook
     documents = Document.query.filter_by(
         notebook_id=notebook_id
-    ).order_by(Document.uploaded_at.desc()).all()
+    ).order_by(Document.id.desc()).all()
 
     return jsonify({
         "notebook_id": notebook.id,
@@ -339,10 +335,82 @@ def get_notebook_documents(notebook_id):
         "documents": [
             {
                 "id": document.id,
-                "filename": document.original_filename,
-                "uploaded_at": document.uploaded_at.isoformat(),
-                "total_chunks": len(document.chunks)
+                "original_filename": document.original_filename,
+                "stored_filename": document.stored_filename,
+                "uploaded_at": (
+                    document.uploaded_at.isoformat()
+                    if document.uploaded_at else None
+                ),
+                "processing_status": document.processing_status
             }
             for document in documents
         ]
     }), 200
+
+@notebook_bp.route(
+    "/api/notebooks/<int:notebook_id>/documents/<int:document_id>",
+    methods=["GET"]
+)
+def get_document_status(notebook_id, document_id):
+
+    document = Document.query.filter_by(
+        id=document_id,
+        notebook_id=notebook_id
+    ).first()
+
+    if document is None:
+        return jsonify({
+            "error": "Document not found"
+        }), 404
+
+    return jsonify({
+        "document_id": document.id,
+        "notebook_id": document.notebook_id,
+        "original_filename": document.original_filename,
+        "processing_status": document.processing_status,
+        "uploaded_at": (
+            document.uploaded_at.isoformat()
+            if document.uploaded_at else None
+        )
+    }), 200
+    
+
+
+@notebook_bp.route("/api/notebooks/<int:notebook_id>/ask", methods=["POST"])
+def ask_question(notebook_id):
+
+    data = request.get_json(silent=True) or {}
+
+    question = data.get("question", "").strip()
+
+    if not question:
+        return jsonify({
+            "error": "Question is required."
+        }), 400
+
+    # Validate notebook
+    notebook = db.session.get(Notebook, notebook_id)
+
+    if notebook is None:
+        return jsonify({
+            "error": "Notebook not found."
+        }), 404
+
+    try:
+        result = answer_question(
+            question=question,
+            notebook_id=notebook_id,
+            top_k=5
+        )
+
+        return jsonify(result), 200
+
+    except ValueError as error:
+        return jsonify({
+            "error": str(error)
+        }), 400
+
+    except RuntimeError as error:
+        return jsonify({
+            "error": str(error)
+        }), 503
